@@ -15,7 +15,9 @@ using ChocolateyGui.Common.Models.Messages;
 using ChocolateyGui.Common.Properties;
 using ChocolateyGui.Common.Services;
 using ChocolateyGui.Common.ViewModels.Items;
+using ChocolateyGui.Common.Windows.Controls.Dialogs;
 using ChocolateyGui.Common.Windows.Services;
+using MahApps.Metro.Controls.Dialogs;
 using NuGet;
 using Action = System.Action;
 using MemoryCache = System.Runtime.Caching.MemoryCache;
@@ -42,6 +44,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
         private readonly IChocolateyGuiCacheService _chocolateyGuiCacheService;
         private readonly IConfigService _configService;
         private readonly IAllowedCommandsService _allowedCommandsService;
+        private readonly IDialogCoordinator _dialogCoordinator;
 
         private string[] _authors;
 
@@ -118,7 +121,8 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
             IProgressService progressService,
             IChocolateyGuiCacheService chocolateyGuiCacheService,
             IConfigService configService,
-            IAllowedCommandsService allowedCommandsService)
+            IAllowedCommandsService allowedCommandsService,
+            IDialogCoordinator dialogCoordinator)
         {
             _chocolateyService = chocolateyService;
             _eventAggregator = eventAggregator;
@@ -128,6 +132,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
             _chocolateyGuiCacheService = chocolateyGuiCacheService;
             _configService = configService;
             _allowedCommandsService = allowedCommandsService;
+            _dialogCoordinator = dialogCoordinator;
         }
 
         public DateTime Created
@@ -428,6 +433,16 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
                     Resources.PackageViewModel_FailedToInstall,
                     string.Format(Resources.PackageViewModel_RanIntoInstallError, Id, ex.Message));
             }
+        }
+
+        public async void InstallAdvanced()
+        {
+            var dialog = new AdvancedChocolateyDialog();
+            await _dialogCoordinator.ShowMetroDialogAsync(this, dialog);
+
+            var result = await dialog.WaitForClosingAsync();
+
+            await _dialogCoordinator.HideMetroDialogAsync(this, dialog);
         }
 
         public async Task Reinstall()

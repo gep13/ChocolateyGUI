@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ChocolateyGui.Common.Models;
+using NuGet;
 
 namespace ChocolateyGui.Common.Services
 {
@@ -23,6 +24,8 @@ namespace ChocolateyGui.Common.Services
         Task<PackageResults> Search(string query, PackageSearchOptions options);
 
         Task<Package> GetByVersionAndIdAsync(string id, string version, bool isPrerelease);
+
+        Task<List<string>> GetAvailableVersionsForPackageIdAsync(string id);
 
         Task<PackageOperationResult> InstallPackage(
             string id,
