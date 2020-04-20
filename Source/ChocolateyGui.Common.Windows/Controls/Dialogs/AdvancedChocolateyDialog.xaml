@@ -22,12 +22,12 @@
                 <ColumnDefinition Width="150" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0">Version</Label>
-            <ComboBox ItemsSource="{Binding AvailableVersions}" SelectedItem="{Binding SelectedVersion}" />
-            <Label Grid.Row="1" Grid.Column="0">Package Parameters</Label>
-            <TextBox Grid.Row="1" Grid.Column="1" Name="PackageParametersTextBox" Text="{Binding PackageParameters, UpdateSourceTrigger=PropertyChanged}" />
-            <Label Grid.Row="2" Grid.Column="0">Install Arguments</Label>
-            <TextBox Grid.Row="2" Grid.Column="1" Name="InstallArgumentsTextBox" Text="{Binding InstallArguments, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Grid.Row="0" Grid.Column="0" Margin="0 2">Version</Label>
+            <ComboBox Grid.Row="0" Grid.Column="1" Margin="0 2" ItemsSource="{Binding AvailableVersions}" SelectedItem="{Binding SelectedVersion}" />
+            <Label Grid.Row="1" Grid.Column="0" Margin="0 2">Package Parameters</Label>
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="0 2" Name="PackageParametersTextBox" Text="{Binding PackageParameters, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Grid.Row="2" Grid.Column="0" Margin="0 2">Install Arguments</Label>
+            <TextBox Grid.Row="2" Grid.Column="1" Margin="0 2" Name="InstallArgumentsTextBox" Text="{Binding InstallArguments, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
         <StackPanel
                 Grid.Row="1"
