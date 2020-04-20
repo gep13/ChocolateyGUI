@@ -31,7 +31,8 @@ namespace ChocolateyGui.Common.Services
             string id,
             string version = null,
             Uri source = null,
-            bool force = false);
+            bool force = false,
+            AdvancedInstall advancedInstallOptions = null);
 
         Task<PackageOperationResult> UninstallPackage(string id, string version, bool force = false);
 

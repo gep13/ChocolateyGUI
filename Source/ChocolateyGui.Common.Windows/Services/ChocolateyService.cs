@@ -132,7 +132,7 @@ namespace ChocolateyGui.Common.Windows.Services
                     var results = packages
                         .Where(p => !p.Value.Inconclusive)
                         .Select(p => new OutdatedPackage
-                            { Id = p.Value.Package.Id, VersionString = p.Value.Package.Version.ToNormalizedString() })
+                        { Id = p.Value.Package.Id, VersionString = p.Value.Package.Version.ToNormalizedString() })
                         .ToArray();
 
                     try
@@ -157,7 +157,8 @@ namespace ChocolateyGui.Common.Windows.Services
             string id,
             string version = null,
             Uri source = null,
-            bool force = false)
+            bool force = false,
+            AdvancedInstall advancedInstallOptions = null)
         {
             using (await Lock.WriteLockAsync())
             {
@@ -183,6 +184,13 @@ namespace ChocolateyGui.Common.Windows.Services
                             if (force)
                             {
                                 config.Force = true;
+                            }
+
+                            if (advancedInstallOptions != null)
+                            {
+                                // TODO: This needs to be better! :-)
+                                config.InstallArguments = advancedInstallOptions?.InstallArguments;
+                                config.PackageParameters = advancedInstallOptions?.PackageParameters;
                             }
                         });
 

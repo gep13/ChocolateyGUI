@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Caliburn.Micro;
 using ChocolateyGui.Common.Base;
+using ChocolateyGui.Common.Models;
 using ChocolateyGui.Common.Models.Messages;
 using ChocolateyGui.Common.Properties;
 using ChocolateyGui.Common.Services;
@@ -457,6 +458,58 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
             {
                 // do something with the input
                 Debug.WriteLine(result.PackageParameters);
+
+                try
+                {
+                    using (await StartProgressDialog(Resources.PackageViewModel_InstallingPackage, Resources.PackageViewModel_InstallingPackage, Id))
+                    {
+                        var advancedOptions = new AdvancedInstall();
+                        advancedOptions.InstallArguments = result.InstallArguments;
+                        advancedOptions.PackageParameters = result.PackageParameters;
+
+                        var packageInstallResult = await _chocolateyService.InstallPackage(
+                            Id,
+                            result.SelectedVersion != null ? result.SelectedVersion.ToString() : Version.ToString(),
+                            Source,
+                            false,
+                            advancedOptions).ConfigureAwait(false);
+
+                        if (!packageInstallResult.Successful)
+                        {
+                            var exceptionMessage = packageInstallResult.Exception == null
+                                ? string.Empty
+                                : string.Format(Resources.ChocolateyRemotePackageService_ExceptionFormat, packageInstallResult.Exception);
+
+                            var message = string.Format(
+                                Resources.ChocolateyRemotePackageService_InstallFailedMessage,
+                                Id,
+                                Version,
+                                string.Join("\n", packageInstallResult.Messages),
+                                exceptionMessage);
+
+                            await _progressService.ShowMessageAsync(
+                                Resources.ChocolateyRemotePackageService_InstallFailedTitle,
+                                message);
+
+                            Logger.Warning(packageInstallResult.Exception, "Failed to install {Package}, version {Version}. Errors: {Errors}", Id, Version, packageInstallResult.Messages);
+
+                            return;
+                        }
+
+                        IsInstalled = true;
+
+                        _chocolateyGuiCacheService.PurgeOutdatedPackages();
+                        _eventAggregator.BeginPublishOnUIThread(new PackageChangedMessage(Id, PackageChangeType.Installed, Version));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, "Ran into an error while installing {Id}, version {Version}.", Id, Version);
+
+                    await _progressService.ShowMessageAsync(
+                        Resources.PackageViewModel_FailedToInstall,
+                        string.Format(Resources.PackageViewModel_RanIntoInstallError, Id, ex.Message));
+                }
             }
         }
 
