@@ -6,6 +6,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -437,12 +438,19 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
 
         public async void InstallAdvanced()
         {
-            var dialog = new AdvancedChocolateyDialog();
-            await _dialogCoordinator.ShowMetroDialogAsync(this, dialog);
+            var availablePackageVersions = await _chocolateyService.GetAvailableVersionsForPackageIdAsync(Id);
 
-            var result = await dialog.WaitForClosingAsync();
+            var customDialog = new CustomDialog() { Title = "Install Advanced" };
 
-            await _dialogCoordinator.HideMetroDialogAsync(this, dialog);
+            var dataContext = new AdvancedInstallViewModel(instance =>
+            {
+                this._dialogCoordinator.HideMetroDialogAsync(this, customDialog);
+                Debug.WriteLine(instance.PackageParameters);
+            }, availablePackageVersions);
+
+            customDialog.Content = new AdvancedChocolateyDialog { DataContext = dataContext };
+
+            await this._dialogCoordinator.ShowMetroDialogAsync(this, customDialog);
         }
 
         public async Task Reinstall()

@@ -258,6 +258,7 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RoutedCommandBinding.cs" />
     <Compile Include="Commands\RoutedCommandMonitor.cs" />
+    <Compile Include="Commands\SimpleCommand.cs" />
     <Compile Include="Controls\Dialogs\AdvancedChocolateyDialog.xaml.cs">
       <DependentUpon>AdvancedChocolateyDialog.xaml</DependentUpon>
     </Compile>
@@ -310,6 +311,7 @@
     <Compile Include="Utilities\PackageAuthorsComparer.cs" />
     <Compile Include="Utilities\ResourceReader.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
+    <Compile Include="ViewModels\Items\AdvancedInstallViewModel.cs" />
     <Compile Include="ViewModels\Items\PackageViewModel.cs" />
     <Compile Include="ViewModels\Items\SourceViewModel.cs" />
     <Compile Include="ViewModels\LocalSourceViewModel.cs" />

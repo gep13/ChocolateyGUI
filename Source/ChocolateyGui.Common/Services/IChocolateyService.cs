@@ -25,7 +25,7 @@ namespace ChocolateyGui.Common.Services
 
         Task<Package> GetByVersionAndIdAsync(string id, string version, bool isPrerelease);
 
-        Task<List<string>> GetAvailableVersionsForPackageIdAsync(string id);
+        Task<List<SemanticVersion>> GetAvailableVersionsForPackageIdAsync(string id);
 
         Task<PackageOperationResult> InstallPackage(
             string id,

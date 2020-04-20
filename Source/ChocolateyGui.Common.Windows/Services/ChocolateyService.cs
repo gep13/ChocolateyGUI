@@ -269,7 +269,7 @@ namespace ChocolateyGui.Common.Windows.Services
             return GetMappedPackage(_choco, new PackageResult(nugetPackage, null, chocoConfig.Sources), _mapper);
         }
 
-        public async Task<List<string>> GetAvailableVersionsForPackageIdAsync(string id)
+        public async Task<List<SemanticVersion>> GetAvailableVersionsForPackageIdAsync(string id)
         {
             _choco.Set(
                 config =>
@@ -286,7 +286,7 @@ namespace ChocolateyGui.Common.Windows.Services
                 });
             var chocoConfig = _choco.GetConfiguration();
             var packages = await _choco.ListAsync<PackageResult>();
-            return packages.Select(p => p.Version).ToList();
+            return packages.Select(p => new SemanticVersion(p.Version)).ToList();
         }
 
         public async Task<PackageOperationResult> UninstallPackage(string id, string version, bool force = false)
