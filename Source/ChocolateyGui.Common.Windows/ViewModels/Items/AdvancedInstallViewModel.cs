@@ -5,11 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using ChocolateyGui.Common.Base;
-using ChocolateyGui.Common.Services;
 using ChocolateyGui.Common.Windows.Commands;
 using NuGet;
 
@@ -17,15 +16,19 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
 {
     public class AdvancedInstallViewModel : ObservableBase
     {
+        private TaskCompletionSource<AdvancedInstallViewModel> tcs;
         private SemanticVersion _selectedVersion;
         private List<SemanticVersion> _availableVersions;
         private string _packageParamaters;
         private string _installArguments;
 
-        public AdvancedInstallViewModel(Action<AdvancedInstallViewModel> closeHandler, List<SemanticVersion> availableVersions)
+        public AdvancedInstallViewModel(List<SemanticVersion> availableVersions)
         {
-            this.CancelCommand = new SimpleCommand(o => true, o => closeHandler(this));
+            tcs = new TaskCompletionSource<AdvancedInstallViewModel>();
+
             this.AvailableVersions = availableVersions;
+            this.InstallCommand = new SimpleCommand(o => true, o => tcs.SetResult(this));
+            this.CancelCommand = new SimpleCommand(o => true, o => tcs.SetResult(null));
         }
 
         public SemanticVersion SelectedVersion
@@ -55,5 +58,10 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
         public ICommand InstallCommand { get; }
 
         public ICommand CancelCommand { get; }
+
+        public Task<AdvancedInstallViewModel> WaitForClosingAsync()
+        {
+            return tcs.Task;
+        }
     }
 }

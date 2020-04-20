@@ -442,15 +442,22 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
 
             var customDialog = new CustomDialog() { Title = "Install Advanced" };
 
-            var dataContext = new AdvancedInstallViewModel(instance =>
-            {
-                this._dialogCoordinator.HideMetroDialogAsync(this, customDialog);
-                Debug.WriteLine(instance.PackageParameters);
-            }, availablePackageVersions);
+            var dataContext = new AdvancedInstallViewModel(availablePackageVersions);
 
             customDialog.Content = new AdvancedChocolateyDialog { DataContext = dataContext };
 
             await this._dialogCoordinator.ShowMetroDialogAsync(this, customDialog);
+
+            var result = await dataContext.WaitForClosingAsync();
+
+            await _dialogCoordinator.HideMetroDialogAsync(this, customDialog);
+
+            // null means that you click the Cancel button
+            if (result != null)
+            {
+                // do something with the input
+                Debug.WriteLine(result.PackageParameters);
+            }
         }
 
         public async Task Reinstall()
