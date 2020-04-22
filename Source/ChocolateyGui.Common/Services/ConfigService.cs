@@ -28,7 +28,18 @@ namespace ChocolateyGui.Common.Services
         {
             _database = database;
             var settings = _database.GetCollection<AppConfiguration>(nameof(AppConfiguration));
-            _appConfiguration = settings.FindById("Default") ?? new AppConfiguration() { Id = "Default", OutdatedPackagesCacheDurationInMinutes = "60", UseKeyboardBindings = true };
+            _appConfiguration = settings.FindById("Default") ?? new AppConfiguration()
+            {
+                Id = "Default",
+                OutdatedPackagesCacheDurationInMinutes = "60",
+                NumberOfPackageVersionsForSelection = "20",
+                UseKeyboardBindings = true
+            };
+
+            if (_appConfiguration.NumberOfPackageVersionsForSelection == null)
+            {
+                _appConfiguration.NumberOfPackageVersionsForSelection = "20";
+            }
         }
 
         public event EventHandler SettingsChanged;

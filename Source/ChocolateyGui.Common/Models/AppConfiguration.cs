@@ -17,6 +17,10 @@ namespace ChocolateyGui.Common.Models
         [Config]
         public string OutdatedPackagesCacheDurationInMinutes { get; set; }
 
+        [LocalizedDescription("SettingsView_NumberOfPackageVersionsForSelectionDescription")]
+        [Config]
+        public string NumberOfPackageVersionsForSelection { get; set; }
+
         [LocalizedDescription("SettingsView_ToggleShowConsoleOutputDescription")]
         [Feature]
         public bool ShowConsoleOutput { get; set; }
