@@ -17,6 +17,26 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150" />
@@ -25,9 +45,68 @@
             <Label Grid.Row="0" Grid.Column="0" Margin="0 2">Version</Label>
             <ComboBox Grid.Row="0" Grid.Column="1" Margin="0 2" ItemsSource="{Binding AvailableVersions}" SelectedItem="{Binding SelectedVersion}" />
             <Label Grid.Row="1" Grid.Column="0" Margin="0 2">Package Parameters</Label>
-            <TextBox Grid.Row="1" Grid.Column="1" Margin="0 2" Name="PackageParametersTextBox" Text="{Binding PackageParameters, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="0 2" Text="{Binding PackageParameters, UpdateSourceTrigger=PropertyChanged}" />
             <Label Grid.Row="2" Grid.Column="0" Margin="0 2">Install Arguments</Label>
-            <TextBox Grid.Row="2" Grid.Column="1" Margin="0 2" Name="InstallArgumentsTextBox" Text="{Binding InstallArguments, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Grid.Row="2" Grid.Column="1" Margin="0 2" Text="{Binding InstallArguments, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Grid.Row="3" Grid.Column="0" Margin="0 2">Execution Timeout In Seconds</Label>
+            <mah:NumericUpDown Grid.Row="3" Grid.Column="1" Margin="0 2" Value="{Binding ExecutionTimeoutInSeconds}" />
+            <Label Grid.Row="4" Grid.Column="0" Margin="0 2">Log File</Label>
+            <TextBox Grid.Row="4" Grid.Column="1" Margin="0 2" Text="{Binding LogFile}" />
+            <Label Grid.Row="5" Grid.Column="0" Margin="0 2">PreRelease</Label>
+            <CheckBox Grid.Row="5" Grid.Column="1" Margin="0 2" IsChecked="{Binding PreRelease}" />
+            <Label Grid.Row="6" Grid.Column="0" Margin="0 2">Forcex86</Label>
+            <CheckBox Grid.Row="6" Grid.Column="1" Margin="0 2" IsChecked="{Binding Forcex86}" />
+            <Label Grid.Row="7" Grid.Column="0" Margin="0 2">Override Arguments</Label>
+            <CheckBox Grid.Row="7" Grid.Column="1" Margin="0 2" IsChecked="{Binding OverrideArguments}" />
+            <Label Grid.Row="8" Grid.Column="0" Margin="0 2">Not Silent</Label>
+            <CheckBox Grid.Row="8" Grid.Column="1" Margin="0 2" IsChecked="{Binding NotSilent}" />
+            <Label Grid.Row="9" Grid.Column="0" Margin="0 2">Apply Install Arguments to Dependencies</Label>
+            <CheckBox Grid.Row="9" Grid.Column="1" Margin="0 2" IsChecked="{Binding ApplyInstallArgumentsToDependencies}" />
+            <Label Grid.Row="10" Grid.Column="0" Margin="0 2">Apply Package Parameters to Dependencies</Label>
+            <CheckBox Grid.Row="10" Grid.Column="1" Margin="0 2" IsChecked="{Binding ApplyPackageParametersToDependencies}" />
+            <Label Grid.Row="11" Grid.Column="0" Margin="0 2">Allow Downgrade</Label>
+            <CheckBox Grid.Row="11" Grid.Column="1" Margin="0 2" IsChecked="{Binding AllowDowngrade}" />
+            <Label Grid.Row="12" Grid.Column="0" Margin="0 2">Allow Multiple Versions</Label>
+            <CheckBox Grid.Row="12" Grid.Column="1" Margin="0 2" IsChecked="{Binding AllowMultipleVersions}" />
+            <Label Grid.Row="13" Grid.Column="0" Margin="0 2">Ignore Dependencies</Label>
+            <CheckBox Grid.Row="13" Grid.Column="1" Margin="0 2" IsChecked="{Binding IgnoreDependencies}" />
+            <Label Grid.Row="14" Grid.Column="0" Margin="0 2">Force Dependencies</Label>
+            <CheckBox Grid.Row="14" Grid.Column="1" Margin="0 2" IsChecked="{Binding ForceDependencies}" />
+            <Label Grid.Row="15" Grid.Column="0" Margin="0 2">Skip PowerShell</Label>
+            <CheckBox Grid.Row="15" Grid.Column="1" Margin="0 2" IsChecked="{Binding SkipPowerShell}" />
+            <Expander Grid.Row="16" Grid.ColumnSpan="2">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Margin="0 2">Ignore Checksums</Label>
+                    <CheckBox Grid.Row="0" Grid.Column="1" Margin="0 2" IsChecked="{Binding IgnoreChecksums}" />
+                    <Label Grid.Row="1" Grid.Column="0" Margin="0 2">Allow Empty Checksums</Label>
+                    <CheckBox Grid.Row="1" Grid.Column="1" Margin="0 2" IsChecked="{Binding AllowEmptyChecksums}" />
+                    <Label Grid.Row="2" Grid.Column="0" Margin="0 2">Allow Empty Checksums Secure</Label>
+                    <CheckBox Grid.Row="2" Grid.Column="1" Margin="0 2" IsChecked="{Binding AllowEmptyChecksumsSecure}" />
+                    <Label Grid.Row="3" Grid.Column="0" Margin="0 2">Require Checksums</Label>
+                    <CheckBox Grid.Row="3" Grid.Column="1" Margin="0 2" IsChecked="{Binding RequireChecksums}" />
+                    <Label Grid.Row="4" Grid.Column="0" Margin="0 2">Download Checksum</Label>
+                    <TextBox Grid.Row="4" Grid.Column="1" Margin="0 2" Text="{Binding DownloadChecksum}" />
+                    <Label Grid.Row="5" Grid.Column="0" Margin="0 2">Download Checksum 64bit</Label>
+                    <TextBox Grid.Row="5" Grid.Column="1" Margin="0 2" Text="{Binding DownloadChecksum64bit}" />
+                    <Label Grid.Row="5" Grid.Column="0" Margin="0 2">Download Checksum Type</Label>
+                    <TextBox Grid.Row="5" Grid.Column="1" Margin="0 2" Text="{Binding DownloadChecksumType}" />
+                    <Label Grid.Row="6" Grid.Column="0" Margin="0 2">Download Checksum Type 64bit</Label>
+                    <TextBox Grid.Row="6" Grid.Column="1" Margin="0 2" Text="{Binding DownloadChecksumType64bit}" />
+                </Grid>
+            </Expander>
         </Grid>
         <StackPanel
                 Grid.Row="1"
