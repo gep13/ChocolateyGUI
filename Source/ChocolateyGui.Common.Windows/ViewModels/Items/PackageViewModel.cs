@@ -463,9 +463,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
                 {
                     using (await StartProgressDialog(Resources.PackageViewModel_InstallingPackage, Resources.PackageViewModel_InstallingPackage, Id))
                     {
-                        var advancedOptions = new AdvancedInstall();
-                        advancedOptions.InstallArguments = result.InstallArguments;
-                        advancedOptions.PackageParameters = result.PackageParameters;
+                        var advancedOptions = _mapper.Map<AdvancedInstall>(result);
 
                         var packageInstallResult = await _chocolateyService.InstallPackage(
                             Id,
