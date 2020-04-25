@@ -441,7 +441,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
         {
             var availablePackageVersions = await _chocolateyService.GetAvailableVersionsForPackageIdAsync(Id);
 
-            var customDialog = new CustomDialog() { Title = "Install Advanced" };
+            var customDialog = new CustomDialog() { Title = Resources.AdvancedChocolateyDialog_Title_Install };
 
             var dataContext = new AdvancedInstallViewModel(availablePackageVersions);
 
