@@ -418,15 +418,12 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
 
             await _dialogCoordinator.HideMetroDialogAsync(this, customDialog);
 
-            // null means that you click the Cancel button
+            // null means that the Cancel button was clicked
             if (result != null)
             {
-                // do something with the input
-                Debug.WriteLine(result.PackageParameters);
-
                 var advancedOptions = _mapper.Map<AdvancedInstall>(result);
 
-                await InstallPackage(result.SelectedVersion.ToString());
+                await InstallPackage(result.SelectedVersion.ToString(), advancedOptions);
             }
         }
 
