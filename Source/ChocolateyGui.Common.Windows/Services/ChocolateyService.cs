@@ -188,9 +188,35 @@ namespace ChocolateyGui.Common.Windows.Services
 
                             if (advancedInstallOptions != null)
                             {
-                                // TODO: This needs to be better! :-)
-                                config.InstallArguments = advancedInstallOptions?.InstallArguments;
-                                config.PackageParameters = advancedInstallOptions?.PackageParameters;
+                                config.InstallArguments = advancedInstallOptions.InstallArguments;
+                                config.PackageParameters = advancedInstallOptions.PackageParameters;
+                                config.CommandExecutionTimeoutSeconds = advancedInstallOptions.ExecutionTimeoutInSeconds;
+                                config.AdditionalLogFileLocation = advancedInstallOptions.LogFile;
+                                config.Prerelease = advancedInstallOptions.PreRelease;
+                                config.ForceX86 = advancedInstallOptions.Forcex86;
+                                config.OverrideArguments = advancedInstallOptions.OverrideArguments;
+                                config.NotSilent = advancedInstallOptions.NotSilent;
+                                config.ApplyInstallArgumentsToDependencies = advancedInstallOptions.ApplyInstallArgumentsToDependencies;
+                                config.ApplyPackageParametersToDependencies = advancedInstallOptions.ApplyPackageParametersToDependencies;
+                                config.AllowDowngrade = advancedInstallOptions.AllowDowngrade;
+                                config.AllowMultipleVersions = advancedInstallOptions.AllowMultipleVersions;
+                                config.IgnoreDependencies = advancedInstallOptions.IgnoreDependencies;
+                                config.ForceDependencies = advancedInstallOptions.ForceDependencies;
+                                config.SkipPackageInstallProvider = advancedInstallOptions.SkipPowerShell;
+                                config.Features.ChecksumFiles = !advancedInstallOptions.IgnoreChecksums;
+                                config.Features.AllowEmptyChecksums = advancedInstallOptions.AllowEmptyChecksums;
+                                config.Features.AllowEmptyChecksumsSecure = advancedInstallOptions.AllowEmptyChecksumsSecure;
+
+                                if (advancedInstallOptions.RequireChecksums)
+                                {
+                                    config.Features.AllowEmptyChecksums = false;
+                                    config.Features.AllowEmptyChecksumsSecure = false;
+                                }
+
+                                config.DownloadChecksum = advancedInstallOptions.DownloadChecksum;
+                                config.DownloadChecksum64 = advancedInstallOptions.DownloadChecksum64bit;
+                                config.DownloadChecksumType = advancedInstallOptions.DownloadChecksumType;
+                                config.DownloadChecksumType64 = advancedInstallOptions.DownloadChecksumType64bit;
                             }
                         });
 
