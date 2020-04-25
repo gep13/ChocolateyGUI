@@ -117,16 +117,19 @@
                             ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_ExecutionTimeoutInSeconds_ToolTip}">
                             <mah:NumericUpDown Value="{Binding ExecutionTimeoutInSeconds}" />
                         </HeaderedContentControl>
-                        <HeaderedContentControl
-                            Header="{x:Static properties:Resources.AdvancedChocolateyDialog_PreRelease_Header}"
-                            ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_PreRelease_ToolTip}">
-                            <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding PreRelease}" />
-                        </HeaderedContentControl>
-                        <HeaderedContentControl
-                            Header="{x:Static properties:Resources.AdvancedChocolateyDialog_Forcex86_Header}"
-                            ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_Forcex86_ToolTip}">
-                            <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding Forcex86}" />
-                        </HeaderedContentControl>
+                        <StackPanel Orientation="Horizontal">
+                            <HeaderedContentControl
+                                Header="{x:Static properties:Resources.AdvancedChocolateyDialog_PreRelease_Header}"
+                                ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_PreRelease_ToolTip}">
+                                <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding PreRelease}" />
+                            </HeaderedContentControl>
+                            <HeaderedContentControl
+                                Margin="50,0,0,0"
+                                Header="{x:Static properties:Resources.AdvancedChocolateyDialog_Forcex86_Header}"
+                                ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_Forcex86_ToolTip}">
+                                <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding Forcex86}" />
+                            </HeaderedContentControl>
+                        </StackPanel>
                     </StackPanel>
 
                     <Expander Grid.Row="1" Header="{x:Static properties:Resources.AdvancedChocolateyDialog_AdvancedOptions_Header}">
@@ -136,26 +139,32 @@
                                 ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_LogFile_ToolTip}">
                                 <TextBox Text="{Binding LogFile}" />
                             </HeaderedContentControl>
-                            <HeaderedContentControl
-                                Header="{x:Static properties:Resources.AdvancedChocolateyDialog_OverrideArguments_Header}"
-                                ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_OverrideArguments_ToolTip}">
-                                <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding OverrideArguments}" />
-                            </HeaderedContentControl>
-                            <HeaderedContentControl
-                                Header="{x:Static properties:Resources.AdvancedChocolateyDialog_NotSilent_Header}"
-                                ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_NotSilent_ToolTip}">
-                                <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding NotSilent}" />
-                            </HeaderedContentControl>
-                            <HeaderedContentControl
-                                Header="{x:Static properties:Resources.AdvancedChocolateyDialog_AllowDowngrade_Header}"
-                                ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_AllowDowngrade_ToolTip}">
-                                <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding AllowDowngrade}" />
-                            </HeaderedContentControl>
-                            <HeaderedContentControl
-                                Header="{x:Static properties:Resources.AdvancedChocolateyDialog_AllowMultipleVersions_Header}"
-                                ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_AllowMultipleVersions_ToolTip}">
-                                <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding AllowMultipleVersions}" />
-                            </HeaderedContentControl>
+                            <StackPanel Orientation="Horizontal">
+                                <HeaderedContentControl
+                                    Header="{x:Static properties:Resources.AdvancedChocolateyDialog_OverrideArguments_Header}"
+                                    ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_OverrideArguments_ToolTip}">
+                                    <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding OverrideArguments}" />
+                                </HeaderedContentControl>
+                                <HeaderedContentControl
+                                    Margin="50,0,0,0"
+                                    Header="{x:Static properties:Resources.AdvancedChocolateyDialog_NotSilent_Header}"
+                                    ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_NotSilent_ToolTip}">
+                                    <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding NotSilent}" />
+                                </HeaderedContentControl>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <HeaderedContentControl
+                                    Header="{x:Static properties:Resources.AdvancedChocolateyDialog_AllowDowngrade_Header}"
+                                    ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_AllowDowngrade_ToolTip}">
+                                    <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding AllowDowngrade}" />
+                                </HeaderedContentControl>
+                                <HeaderedContentControl
+                                    Margin="50,0,0,0"
+                                    Header="{x:Static properties:Resources.AdvancedChocolateyDialog_AllowMultipleVersions_Header}"
+                                    ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_AllowMultipleVersions_ToolTip}">
+                                    <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding AllowMultipleVersions}" />
+                                </HeaderedContentControl>
+                            </StackPanel>
                             <HeaderedContentControl
                                 Header="{x:Static properties:Resources.AdvancedChocolateyDialog_SkipPowerShell_Header}"
                                 ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_SkipPowerShell_ToolTip}">
@@ -166,51 +175,63 @@
 
                     <Expander Grid.Row="2" Header="{x:Static properties:Resources.AdvancedChocolateyDialog_DependencyOptions_Header}">
                         <StackPanel Orientation="Vertical">
-                            <HeaderedContentControl
-                                Header="{x:Static properties:Resources.AdvancedChocolateyDialog_IgnoreDependencies_Header}"
-                                ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_IgnoreDependencies_ToolTip}">
-                                <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding IgnoreDependencies}" />
-                            </HeaderedContentControl>
-                            <HeaderedContentControl
-                                Header="{x:Static properties:Resources.AdvancedChocolateyDialog_ForceDependencies_Header}"
-                                ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_ForceDependencies_ToolTip}">
-                                <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding ForceDependencies}" />
-                            </HeaderedContentControl>
-                            <HeaderedContentControl
-                                Header="{x:Static properties:Resources.AdvancedChocolateyDialog_ApplyInstallArgumentsToDependencies_Header}"
-                                ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_ApplyInstallArgumentsToDependencies_ToolTip}">
-                                <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding ApplyInstallArgumentsToDependencies}" />
-                            </HeaderedContentControl>
-                            <HeaderedContentControl
-                                Header="{x:Static properties:Resources.AdvancedChocolateyDialog_ApplyPackageParametersToDependencies_Header}"
-                                ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_ApplyPackageParametersToDependencies_ToolTip}">
-                                <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding ApplyPackageParametersToDependencies}" />
-                            </HeaderedContentControl>
+                            <StackPanel Orientation="Horizontal">
+                                <HeaderedContentControl
+                                    Header="{x:Static properties:Resources.AdvancedChocolateyDialog_IgnoreDependencies_Header}"
+                                    ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_IgnoreDependencies_ToolTip}">
+                                    <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding IgnoreDependencies}" />
+                                </HeaderedContentControl>
+                                <HeaderedContentControl
+                                    Margin="50,0,0,0"
+                                    Header="{x:Static properties:Resources.AdvancedChocolateyDialog_ForceDependencies_Header}"
+                                    ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_ForceDependencies_ToolTip}">
+                                    <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding ForceDependencies}" />
+                                </HeaderedContentControl>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <HeaderedContentControl
+                                    Header="{x:Static properties:Resources.AdvancedChocolateyDialog_ApplyInstallArgumentsToDependencies_Header}"
+                                    ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_ApplyInstallArgumentsToDependencies_ToolTip}">
+                                    <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding ApplyInstallArgumentsToDependencies}" />
+                                </HeaderedContentControl>
+                                <HeaderedContentControl
+                                    Margin="50,0,0,0"
+                                    Header="{x:Static properties:Resources.AdvancedChocolateyDialog_ApplyPackageParametersToDependencies_Header}"
+                                    ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_ApplyPackageParametersToDependencies_ToolTip}">
+                                    <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding ApplyPackageParametersToDependencies}" />
+                                </HeaderedContentControl>
+                            </StackPanel>
                         </StackPanel>
                     </Expander>
 
                     <Expander Grid.Row="3" Header="{x:Static properties:Resources.AdvancedChocolateyDialog_ChecksumOptions_Header}">
                         <StackPanel Orientation="Vertical">
-                            <HeaderedContentControl
-                                Header="{x:Static properties:Resources.AdvancedChocolateyDialog_IgnoreChecksums_Header}"
-                                ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_IgnoreChecksums_ToolTip}">
-                                <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding IgnoreChecksums}" />
-                            </HeaderedContentControl>
-                            <HeaderedContentControl
-                                Header="{x:Static properties:Resources.AdvancedChocolateyDialog_AllowEmptyChecksums_Header}"
-                                ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_AllowEmptyChecksums_ToolTip}">
-                                <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding AllowEmptyChecksums}" />
-                            </HeaderedContentControl>
-                            <HeaderedContentControl
-                                Header="{x:Static properties:Resources.AdvancedChocolateyDialog_AllowEmptyChecksumsSecure_Header}"
-                                ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_AllowEmptyChecksumsSecure_ToolTip}">
-                                <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding AllowEmptyChecksumsSecure}" />
-                            </HeaderedContentControl>
-                            <HeaderedContentControl
-                                Header="{x:Static properties:Resources.AdvancedChocolateyDialog_RequireChecksums_Header}"
-                                ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_RequireChecksums_ToolTip}">
-                                <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding RequireChecksums}" />
-                            </HeaderedContentControl>
+                            <StackPanel Orientation="Horizontal">
+                                <HeaderedContentControl
+                                    Header="{x:Static properties:Resources.AdvancedChocolateyDialog_IgnoreChecksums_Header}"
+                                    ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_IgnoreChecksums_ToolTip}">
+                                    <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding IgnoreChecksums}" />
+                                </HeaderedContentControl>
+                                <HeaderedContentControl
+                                    Margin="50,0,0,0"
+                                    Header="{x:Static properties:Resources.AdvancedChocolateyDialog_AllowEmptyChecksums_Header}"
+                                    ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_AllowEmptyChecksums_ToolTip}">
+                                    <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding AllowEmptyChecksums}" />
+                                </HeaderedContentControl>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <HeaderedContentControl
+                                    Header="{x:Static properties:Resources.AdvancedChocolateyDialog_AllowEmptyChecksumsSecure_Header}"
+                                    ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_AllowEmptyChecksumsSecure_ToolTip}">
+                                    <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding AllowEmptyChecksumsSecure}" />
+                                </HeaderedContentControl>
+                                <HeaderedContentControl
+                                    Margin="50,0,0,0"
+                                    Header="{x:Static properties:Resources.AdvancedChocolateyDialog_RequireChecksums_Header}"
+                                    ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_RequireChecksums_ToolTip}">
+                                    <mah:ToggleSwitch VerticalAlignment="Center" IsChecked="{Binding RequireChecksums}" />
+                                </HeaderedContentControl>
+                            </StackPanel>
                             <HeaderedContentControl
                                 Header="{x:Static properties:Resources.AdvancedChocolateyDialog_DownloadChecksum_Header}"
                                 ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_DownloadChecksum_ToolTip}">
