@@ -1,137 +1,197 @@
 ﻿<UserControl x:Class="ChocolateyGui.Common.Windows.Controls.Dialogs.AdvancedChocolateyDialog"
-             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="0,10,0,0" FocusManager.FocusedElement="{Binding ElementName=PackageParametersTextBox}" Grid.IsSharedSizeScope="True">
+             xmlns:items="clr-namespace:ChocolateyGui.Common.Windows.ViewModels.Items"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             MaxHeight="500"
+             d:DataContext="{d:DesignInstance items:AdvancedInstallViewModel}"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
+
+    <Grid Margin="0 10 0 0"
+          FocusManager.FocusedElement="{Binding ElementName=AvailableVersionsComboBox}"
+          Grid.IsSharedSizeScope="True">
+
+        <Grid.Resources>
+            <Style BasedOn="{StaticResource {x:Type HeaderedContentControl}}" TargetType="{x:Type HeaderedContentControl}">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="IsTabStop" Value="False" />
+                <Setter Property="Margin" Value="0 2" />
+                <Setter Property="MinHeight" Value="28" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type HeaderedContentControl}">
+                            <Grid Background="Transparent" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0" Background="{TemplateBinding mah:HeaderedControlHelper.HeaderBackground}">
+                                    <mah:ContentControlEx x:Name="PART_Header"
+                                                          Margin="{TemplateBinding mah:ControlsHelper.HeaderMargin}"
+                                                          VerticalAlignment="Stretch"
+                                                          VerticalContentAlignment="Center"
+                                                          Content="{TemplateBinding Header}"
+                                                          ContentCharacterCasing="{TemplateBinding mah:ControlsHelper.ContentCharacterCasing}"
+                                                          ContentStringFormat="{TemplateBinding HeaderStringFormat}"
+                                                          ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                                          ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
+                                                          FontFamily="{TemplateBinding mah:ControlsHelper.HeaderFontFamily}"
+                                                          FontSize="{TemplateBinding mah:ControlsHelper.HeaderFontSize}"
+                                                          FontStretch="{TemplateBinding mah:ControlsHelper.HeaderFontStretch}"
+                                                          FontWeight="{TemplateBinding mah:ControlsHelper.HeaderFontWeight}"
+                                                          Foreground="{TemplateBinding mah:HeaderedControlHelper.HeaderForeground}"
+                                                          IsTabStop="False"
+                                                          RecognizesAccessKey="True"
+                                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                </Grid>
+                                <Grid Grid.Column="1" Background="{TemplateBinding Background}">
+                                    <ContentPresenter x:Name="PART_Content"
+                                                      Margin="{TemplateBinding Padding}"
+                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                      ContentSource="Content"
+                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                </Grid>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="mah:ControlsHelper.HeaderFontSize" Value="{DynamicResource MahApps.Sizes.Font.Normal}" />
+                <Setter Property="mah:ControlsHelper.HeaderMargin" Value="0 0 4 0" />
+                <Setter Property="mah:HeaderedControlHelper.HeaderBackground" Value="{Binding RelativeSource={RelativeSource Self}, Path=Background, Mode=OneWay}" />
+                <Setter Property="mah:HeaderedControlHelper.HeaderForeground" Value="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Mode=OneWay}" />
+            </Style>
+        </Grid.Resources>
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+
         <Grid Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" Margin="0 2">Version</Label>
-            <ComboBox Grid.Row="0" Grid.Column="1" Margin="0 2" ItemsSource="{Binding AvailableVersions}" SelectedItem="{Binding SelectedVersion}" />
-            <Label Grid.Row="1" Grid.Column="0" Margin="0 2">Package Parameters</Label>
-            <TextBox Grid.Row="1" Grid.Column="1" Margin="0 2" Text="{Binding PackageParameters, UpdateSourceTrigger=PropertyChanged}" />
-            <Label Grid.Row="2" Grid.Column="0" Margin="0 2">Install Arguments</Label>
-            <TextBox Grid.Row="2" Grid.Column="1" Margin="0 2" Text="{Binding InstallArguments, UpdateSourceTrigger=PropertyChanged}" />
-            <Label Grid.Row="3" Grid.Column="0" Margin="0 2">Execution Timeout In Seconds</Label>
-            <mah:NumericUpDown Grid.Row="3" Grid.Column="1" Margin="0 2" Value="{Binding ExecutionTimeoutInSeconds}" />
-            <Label Grid.Row="4" Grid.Column="0" Margin="0 2">Log File</Label>
-            <TextBox Grid.Row="4" Grid.Column="1" Margin="0 2" Text="{Binding LogFile}" />
-            <Label Grid.Row="5" Grid.Column="0" Margin="0 2">PreRelease</Label>
-            <CheckBox Grid.Row="5" Grid.Column="1" Margin="0 2" IsChecked="{Binding PreRelease}" />
-            <Label Grid.Row="6" Grid.Column="0" Margin="0 2">Forcex86</Label>
-            <CheckBox Grid.Row="6" Grid.Column="1" Margin="0 2" IsChecked="{Binding Forcex86}" />
-            <Label Grid.Row="7" Grid.Column="0" Margin="0 2">Override Arguments</Label>
-            <CheckBox Grid.Row="7" Grid.Column="1" Margin="0 2" IsChecked="{Binding OverrideArguments}" />
-            <Label Grid.Row="8" Grid.Column="0" Margin="0 2">Not Silent</Label>
-            <CheckBox Grid.Row="8" Grid.Column="1" Margin="0 2" IsChecked="{Binding NotSilent}" />
-            <Label Grid.Row="9" Grid.Column="0" Margin="0 2">Apply Install Arguments to Dependencies</Label>
-            <CheckBox Grid.Row="9" Grid.Column="1" Margin="0 2" IsChecked="{Binding ApplyInstallArgumentsToDependencies}" />
-            <Label Grid.Row="10" Grid.Column="0" Margin="0 2">Apply Package Parameters to Dependencies</Label>
-            <CheckBox Grid.Row="10" Grid.Column="1" Margin="0 2" IsChecked="{Binding ApplyPackageParametersToDependencies}" />
-            <Label Grid.Row="11" Grid.Column="0" Margin="0 2">Allow Downgrade</Label>
-            <CheckBox Grid.Row="11" Grid.Column="1" Margin="0 2" IsChecked="{Binding AllowDowngrade}" />
-            <Label Grid.Row="12" Grid.Column="0" Margin="0 2">Allow Multiple Versions</Label>
-            <CheckBox Grid.Row="12" Grid.Column="1" Margin="0 2" IsChecked="{Binding AllowMultipleVersions}" />
-            <Label Grid.Row="13" Grid.Column="0" Margin="0 2">Ignore Dependencies</Label>
-            <CheckBox Grid.Row="13" Grid.Column="1" Margin="0 2" IsChecked="{Binding IgnoreDependencies}" />
-            <Label Grid.Row="14" Grid.Column="0" Margin="0 2">Force Dependencies</Label>
-            <CheckBox Grid.Row="14" Grid.Column="1" Margin="0 2" IsChecked="{Binding ForceDependencies}" />
-            <Label Grid.Row="15" Grid.Column="0" Margin="0 2">Skip PowerShell</Label>
-            <CheckBox Grid.Row="15" Grid.Column="1" Margin="0 2" IsChecked="{Binding SkipPowerShell}" />
-            <Expander Grid.Row="16" Grid.ColumnSpan="2">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Margin="0 2">Ignore Checksums</Label>
-                    <CheckBox Grid.Row="0" Grid.Column="1" Margin="0 2" IsChecked="{Binding IgnoreChecksums}" />
-                    <Label Grid.Row="1" Grid.Column="0" Margin="0 2">Allow Empty Checksums</Label>
-                    <CheckBox Grid.Row="1" Grid.Column="1" Margin="0 2" IsChecked="{Binding AllowEmptyChecksums}" />
-                    <Label Grid.Row="2" Grid.Column="0" Margin="0 2">Allow Empty Checksums Secure</Label>
-                    <CheckBox Grid.Row="2" Grid.Column="1" Margin="0 2" IsChecked="{Binding AllowEmptyChecksumsSecure}" />
-                    <Label Grid.Row="3" Grid.Column="0" Margin="0 2">Require Checksums</Label>
-                    <CheckBox Grid.Row="3" Grid.Column="1" Margin="0 2" IsChecked="{Binding RequireChecksums}" />
-                    <Label Grid.Row="4" Grid.Column="0" Margin="0 2">Download Checksum</Label>
-                    <TextBox Grid.Row="4" Grid.Column="1" Margin="0 2" Text="{Binding DownloadChecksum}" />
-                    <Label Grid.Row="5" Grid.Column="0" Margin="0 2">Download Checksum 64bit</Label>
-                    <TextBox Grid.Row="5" Grid.Column="1" Margin="0 2" Text="{Binding DownloadChecksum64bit}" />
-                    <Label Grid.Row="5" Grid.Column="0" Margin="0 2">Download Checksum Type</Label>
-                    <TextBox Grid.Row="5" Grid.Column="1" Margin="0 2" Text="{Binding DownloadChecksumType}" />
-                    <Label Grid.Row="6" Grid.Column="0" Margin="0 2">Download Checksum Type 64bit</Label>
-                    <TextBox Grid.Row="6" Grid.Column="1" Margin="0 2" Text="{Binding DownloadChecksumType64bit}" />
+
+                    <StackPanel Grid.Row="0"
+                                Margin="5 0 5 0"
+                                Orientation="Vertical">
+                        <HeaderedContentControl Header="Version">
+                            <ComboBox x:Name="AvailableVersionsComboBox"
+                                      ItemsSource="{Binding AvailableVersions}"
+                                      SelectedItem="{Binding SelectedVersion}" />
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Header="Package Parameters">
+                            <TextBox Text="{Binding PackageParameters, UpdateSourceTrigger=PropertyChanged}" />
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Header="Install Arguments">
+                            <TextBox Text="{Binding InstallArguments, UpdateSourceTrigger=PropertyChanged}" />
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Header="Execution Timeout In Seconds">
+                            <mah:NumericUpDown Value="{Binding ExecutionTimeoutInSeconds}" />
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Header="Log File">
+                            <TextBox Text="{Binding LogFile}" />
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Header="PreRelease">
+                            <CheckBox IsChecked="{Binding PreRelease}" />
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Header="Force x86">
+                            <CheckBox IsChecked="{Binding Forcex86}" />
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Header="Override Arguments">
+                            <CheckBox IsChecked="{Binding OverrideArguments}" />
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Header="Not Silent">
+                            <CheckBox IsChecked="{Binding NotSilent}" />
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Header="Apply Install Arguments to Dependencies">
+                            <CheckBox IsChecked="{Binding ApplyInstallArgumentsToDependencies}" />
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Header="Apply Package Parameters to Dependencies">
+                            <CheckBox IsChecked="{Binding ApplyPackageParametersToDependencies}" />
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Header="Allow Downgrade">
+                            <CheckBox IsChecked="{Binding AllowDowngrade}" />
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Header="Allow Multiple Versions">
+                            <CheckBox IsChecked="{Binding AllowMultipleVersions}" />
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Header="Ignore Dependencies">
+                            <CheckBox IsChecked="{Binding IgnoreDependencies}" />
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Header="Force Dependencies">
+                            <CheckBox IsChecked="{Binding ForceDependencies}" />
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Header="Skip PowerShell">
+                            <CheckBox IsChecked="{Binding SkipPowerShell}" />
+                        </HeaderedContentControl>
+                    </StackPanel>
+
+                    <Expander Grid.Row="1">
+                        <StackPanel Orientation="Vertical">
+                            <HeaderedContentControl Header="Ignore Checksums">
+                                <CheckBox IsChecked="{Binding IgnoreChecksums}" />
+                            </HeaderedContentControl>
+                            <HeaderedContentControl Header="Allow Empty Checksums">
+                                <CheckBox IsChecked="{Binding AllowEmptyChecksums}" />
+                            </HeaderedContentControl>
+                            <HeaderedContentControl Header="Allow Empty Checksums Secure">
+                                <CheckBox IsChecked="{Binding AllowEmptyChecksumsSecure}" />
+                            </HeaderedContentControl>
+                            <HeaderedContentControl Header="Require Checksums">
+                                <CheckBox IsChecked="{Binding RequireChecksums}" />
+                            </HeaderedContentControl>
+                            <HeaderedContentControl Header="Download Checksum">
+                                <TextBox Text="{Binding DownloadChecksum}" />
+                            </HeaderedContentControl>
+                            <HeaderedContentControl Header="Download Checksum 64bit">
+                                <TextBox Text="{Binding DownloadChecksum64bit}" />
+                            </HeaderedContentControl>
+                            <HeaderedContentControl Header="Download Checksum Type">
+                                <TextBox Text="{Binding DownloadChecksumType}" />
+                            </HeaderedContentControl>
+                            <HeaderedContentControl Header="Download Checksum Type 64bit">
+                                <TextBox Text="{Binding DownloadChecksumType64bit}" />
+                            </HeaderedContentControl>
+                        </StackPanel>
+                    </Expander>
                 </Grid>
-            </Expander>
+            </ScrollViewer>
         </Grid>
-        <StackPanel
-                Grid.Row="1"
-                HorizontalAlignment="Right"
-                Orientation="Horizontal">
-            <Button
-                    x:Name="InstallButton"
+
+        <StackPanel Grid.Row="1"
+                    Margin="0 4"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button x:Name="InstallButton"
                     Height="35"
                     MinWidth="80"
-                    Margin="0,0,5,0"
+                    Margin="0 0 5 0"
                     mah:ControlsHelper.ContentCharacterCasing="Normal"
+                    Command="{Binding InstallCommand}"
                     Content="Install"
                     IsDefault="True"
-                    Command="{Binding InstallCommand}"
-                    Style="{DynamicResource MahApps.Styles.Button.Dialogs}"/>
-            <Button
-                    x:Name="CancelButton"
+                    Style="{DynamicResource MahApps.Styles.Button.Dialogs}" />
+            <Button x:Name="CancelButton"
                     Height="35"
                     MinWidth="80"
-                    Margin="5,0,5,0"
+                    Margin="5 0 0 0"
                     mah:ControlsHelper.ContentCharacterCasing="Normal"
+                    Command="{Binding CancelCommand}"
                     Content="Cancel"
                     IsCancel="True"
-                    Command="{Binding CancelCommand}"
                     Style="{DynamicResource MahApps.Styles.Button.Dialogs}" />
         </StackPanel>
     </Grid>
+
 </UserControl>
