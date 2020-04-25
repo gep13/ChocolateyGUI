@@ -224,12 +224,16 @@
                             <HeaderedContentControl
                                 Header="{x:Static properties:Resources.AdvancedChocolateyDialog_DownloadChecksumType_Header}"
                                 ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_DownloadChecksumType_ToolTip}">
-                                <TextBox Text="{Binding DownloadChecksumType}" />
+                                <ComboBox x:Name="ChecksumTypesComboBox"
+                                      ItemsSource="{Binding AvailableChecksumTypes}"
+                                      SelectedItem="{Binding DownloadChecksumType}" />
                             </HeaderedContentControl>
                             <HeaderedContentControl
                                 Header="{x:Static properties:Resources.AdvancedChocolateyDialog_DownloadChecksumType64bit_Header}"
                                 ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_DownloadChecksumType64bit_ToolTip}">
-                                <TextBox Text="{Binding DownloadChecksumType64bit}" />
+                                <ComboBox x:Name="ChecksumTypes64BitComboBox"
+                                      ItemsSource="{Binding AvailableChecksumTypes}"
+                                      SelectedItem="{Binding DownloadChecksumType64bit}" />
                             </HeaderedContentControl>
                         </StackPanel>
                     </Expander>

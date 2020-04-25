@@ -42,14 +42,19 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
         private string _downloadChecksum64bit;
         private string _downloadChecksumType;
         private string _downloadChecksumType64bit;
+        private List<string> _availableChecksumTypes;
 
         public AdvancedInstallViewModel(List<SemanticVersion> availableVersions)
         {
             tcs = new TaskCompletionSource<AdvancedInstallViewModel>();
 
             this.AvailableVersions = availableVersions;
+            this.AvailableChecksumTypes = new List<string> { "md5", "sha1", "sha256", "sha512" };
             this.InstallCommand = new SimpleCommand(o => true, o => tcs.SetResult(this));
             this.CancelCommand = new SimpleCommand(o => true, o => tcs.SetResult(null));
+            this.DownloadChecksumType = "md5";
+            this.DownloadChecksumType64bit = "md5";
+            this.ExecutionTimeoutInSeconds = 2700;
         }
 
         public SemanticVersion SelectedVersion
@@ -200,6 +205,12 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
         {
             get { return _downloadChecksumType64bit; }
             set { SetPropertyValue(ref _downloadChecksumType64bit, value); }
+        }
+
+        public List<string> AvailableChecksumTypes
+        {
+            get { return _availableChecksumTypes; }
+            set { SetPropertyValue(ref _availableChecksumTypes, value); }
         }
 
         public ICommand InstallCommand { get; }
