@@ -20,6 +20,7 @@
                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                 <Setter Property="IsTabStop" Value="False" />
                 <Setter Property="Margin" Value="0 2" />
+                <Setter Property="MinHeight" Value="28" />
                 <Setter Property="SnapsToDevicePixels" Value="True" />
                 <Setter Property="Template">
                     <Setter.Value>
@@ -60,7 +61,7 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
-                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
                 <Setter Property="mah:ControlsHelper.HeaderFontSize" Value="{DynamicResource MahApps.Sizes.Font.Normal}" />
                 <Setter Property="mah:ControlsHelper.HeaderMargin" Value="0 0 4 0" />
                 <Setter Property="mah:HeaderedControlHelper.HeaderBackground" Value="{Binding RelativeSource={RelativeSource Self}, Path=Background, Mode=OneWay}" />
@@ -82,7 +83,7 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Row="0"
-                                Margin="5 0 0 0"
+                                Margin="5 0 5 0"
                                 Orientation="Vertical">
                         <HeaderedContentControl Header="Version">
                             <ComboBox x:Name="AvailableVersionsComboBox"
