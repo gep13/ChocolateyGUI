@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Windows;
 using AutoMapper;
 using Caliburn.Micro;
 using ChocolateyGui.Common.Base;
@@ -441,13 +442,18 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
         {
             var availablePackageVersions = await _chocolateyService.GetAvailableVersionsForPackageIdAsync(Id);
 
-            var customDialog = new CustomDialog() { Title = Resources.AdvancedChocolateyDialog_Title_Install };
+            var customDialog = new CustomDialog
+            {
+                Title = Resources.AdvancedChocolateyDialog_Title_Install,
+                DialogContentMargin = new GridLength(1, GridUnitType.Star),
+                DialogContentWidth = GridLength.Auto
+            };
 
             var dataContext = new AdvancedInstallViewModel(availablePackageVersions);
 
             customDialog.Content = new AdvancedChocolateyDialog { DataContext = dataContext };
 
-            await this._dialogCoordinator.ShowMetroDialogAsync(this, customDialog);
+            await _dialogCoordinator.ShowMetroDialogAsync(this, customDialog);
 
             var result = await dataContext.WaitForClosingAsync();
 
