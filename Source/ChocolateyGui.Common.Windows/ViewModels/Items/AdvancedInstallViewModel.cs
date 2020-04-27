@@ -6,19 +6,23 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using ChocolateyGui.Common.Base;
 using ChocolateyGui.Common.Windows.Commands;
+using Microsoft.VisualStudio.Threading;
 using NuGet;
 
 namespace ChocolateyGui.Common.Windows.ViewModels.Items
 {
     public class AdvancedInstallViewModel : ObservableBase
     {
-        private TaskCompletionSource<AdvancedInstallViewModel> tcs;
+        private TaskCompletionSource<AdvancedInstallViewModel> _tcs;
+        private CancellationTokenSource _cts;
         private SemanticVersion _selectedVersion;
-        private List<SemanticVersion> _availableVersions;
+        private Utilities.NotifyTaskCompletion<ObservableCollection<SemanticVersion>> _availableVersions;
         private string _packageParamaters;
         private string _installArguments;
         private int _executionTimeoutInSeconds;
@@ -44,17 +48,26 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
         private string _downloadChecksumType64bit;
         private List<string> _availableChecksumTypes;
 
-        public AdvancedInstallViewModel(List<SemanticVersion> availableVersions)
+        public AdvancedInstallViewModel(Task<List<SemanticVersion>> availableVersionsTask, SemanticVersion packageVersion)
         {
-            tcs = new TaskCompletionSource<AdvancedInstallViewModel>();
+            _tcs = new TaskCompletionSource<AdvancedInstallViewModel>();
+            _cts = new CancellationTokenSource();
 
-            this.AvailableVersions = availableVersions;
-            this.AvailableChecksumTypes = new List<string> { "md5", "sha1", "sha256", "sha512" };
-            this.InstallCommand = new SimpleCommand(o => true, o => tcs.SetResult(this));
-            this.CancelCommand = new SimpleCommand(o => true, o => tcs.SetResult(null));
-            this.DownloadChecksumType = "md5";
-            this.DownloadChecksumType64bit = "md5";
-            this.ExecutionTimeoutInSeconds = 2700;
+            AvailableVersions = new Utilities.NotifyTaskCompletion<ObservableCollection<SemanticVersion>>(
+                availableVersionsTask
+                    .ContinueWith(task => new ObservableCollection<SemanticVersion>(task.Result))
+                    .WithCancellation(_cts.Token));
+            SelectedVersion = packageVersion;
+            AvailableChecksumTypes = new List<string> { "md5", "sha1", "sha256", "sha512" };
+            InstallCommand = new SimpleCommand(o => AvailableVersions.IsSuccessfullyCompleted && SelectedVersion != default, o => _tcs.SetResult(this));
+            CancelCommand = new SimpleCommand(o => true, o =>
+            {
+                _cts.Cancel();
+                _tcs.SetResult(null);
+            });
+            DownloadChecksumType = "md5";
+            DownloadChecksumType64bit = "md5";
+            ExecutionTimeoutInSeconds = 2700;
         }
 
         public SemanticVersion SelectedVersion
@@ -63,7 +76,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
             set { SetPropertyValue(ref _selectedVersion, value); }
         }
 
-        public List<SemanticVersion> AvailableVersions
+        public Utilities.NotifyTaskCompletion<ObservableCollection<SemanticVersion>> AvailableVersions
         {
             get { return _availableVersions; }
             set { SetPropertyValue(ref _availableVersions, value); }
@@ -219,7 +232,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
 
         public Task<AdvancedInstallViewModel> WaitForClosingAsync()
         {
-            return tcs.Task;
+            return _tcs.Task;
         }
     }
 }

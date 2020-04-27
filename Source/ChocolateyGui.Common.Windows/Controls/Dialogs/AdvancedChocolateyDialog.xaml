@@ -255,9 +255,13 @@
                                 Grid.IsSharedSizeScope="True"
                                 Orientation="Vertical">
                         <HeaderedContentControl Header="{x:Static properties:Resources.AdvancedChocolateyDialog_Version_Header}" ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_Version_ToolTip}">
-                            <ComboBox x:Name="AvailableVersionsComboBox"
-                                      ItemsSource="{Binding AvailableVersions}"
-                                      SelectedItem="{Binding SelectedVersion}" />
+                            <Grid>
+                                <ComboBox x:Name="AvailableVersionsComboBox"
+                                          IsEnabled="{Binding AvailableVersions.IsSuccessfullyCompleted}"
+                                          ItemsSource="{Binding AvailableVersions.Result, Mode=OneWay}"
+                                          SelectedItem="{Binding SelectedVersion, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                <mah:ProgressRing Width="20" Height="20" IsActive="{Binding AvailableVersions.IsNotCompleted}" IsLarge="False" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5 0 0 0" />
+                            </Grid>
                         </HeaderedContentControl>
                         <HeaderedContentControl Header="{x:Static properties:Resources.AdvancedChocolateyDialog_PackageParameters_Header}" ToolTip="{x:Static properties:Resources.AdvancedChocolateyDialog_PackageParameters_ToolTip}">
                             <TextBox Text="{Binding PackageParameters, UpdateSourceTrigger=PropertyChanged}" />

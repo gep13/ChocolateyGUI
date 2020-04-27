@@ -6,7 +6,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
@@ -399,8 +398,6 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
 
         public async void InstallAdvanced()
         {
-            var availablePackageVersions = await _chocolateyService.GetAvailableVersionsForPackageIdAsync(Id);
-
             var customDialog = new CustomDialog
             {
                 Title = Resources.AdvancedChocolateyDialog_Title_Install,
@@ -408,7 +405,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
                 DialogContentWidth = GridLength.Auto
             };
 
-            var dataContext = new AdvancedInstallViewModel(availablePackageVersions);
+            var dataContext = new AdvancedInstallViewModel(_chocolateyService.GetAvailableVersionsForPackageIdAsync(Id), Version);
 
             customDialog.Content = new AdvancedChocolateyDialog { DataContext = dataContext };
 
