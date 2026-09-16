@@ -8,7 +8,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 // TOOLS
 ///////////////////////////////////////////////////////////////////////////////
-#tool choco:?package=transifex-cli&version=1.6.5
+// transifex-cli is installed on demand further down rather than with a #tool
+// directive here. See the TRANSIFEX section below for why.
 
 if (BuildSystem.IsLocalBuild)
 {
@@ -158,6 +159,27 @@ BuildParameters.SetParameters(context: Context,
 ToolSettings.SetToolSettings(context: Context);
 
 BuildParameters.Tasks.InitTask.IsDependentOn("Strong-Name-Signer");
+
+///////////////////////////////////////////////////////////////////////////////
+// TRANSIFEX
+///////////////////////////////////////////////////////////////////////////////
+
+// transifex-cli comes from Chocolatey, so declaring it as "#tool choco:?package=..."
+// installs it eagerly: Cake resolves tool directives before any task runs, and the
+// choco: scheme shells out to choco.exe. That is fine on Windows, but it aborts the
+// release-notes workflow on its Linux agent, where choco does not exist - even though
+// that target never touches Transifex. Install it on demand instead, the same way the
+// recipe acquires every other tool.
+Task("Install-Transifex-Cli")
+    .WithCriteria(() => BuildParameters.ShouldRunTransifex, "Skipping because Transifex is not enabled")
+    .Does(() => RequireTool("#tool choco:?package=transifex-cli&version=1.6.5", () => { }));
+
+// Hang the install off the tasks that actually shell out to tx, NOT off Transifex-Setup:
+// Setup only writes ~/.transifexrc and is skipped when that file already exists, which
+// would skip the install with it. Transifex-Pull-Translations picks this up transitively
+// through Transifex-Push-SourceFiles.
+BuildParameters.Tasks.TransifexPushSourceResourceTask.IsDependentOn("Install-Transifex-Cli");
+BuildParameters.Tasks.TransifexPushTranslationsTask.IsDependentOn("Install-Transifex-Cli");
 
 BuildParameters.PrintParameters(Context);
 
