@@ -21,3 +21,6 @@
 *.PDF	 diff=astextplain
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
+
+# Shell scripts need LF to run on Linux/macOS agents (overrides `* -text` above)
+*.sh text eol=lf
