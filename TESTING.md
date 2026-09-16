@@ -1,0 +1,21 @@
+## Tests in Chocolatey GUI
+
+Like Chocolatey CLI, Chocolatey GUI also has tests. A good place to start to understand Chocolatey testing is the [Chocolatey CLI TESTING.md document](https://github.com/chocolatey/choco/blob/develop/TESTING.md). In addition to the Unit and Integration tests, Chocolatey GUI has a UITests project.
+
+## Running UITests in Chocolatey GUI
+
+When run from Visual Studio, Chocolatey GUI can operate in one of three setups:
+
+1. **(Default for `DEBUG` builds) Isolated local install.** A `DEBUG` build of Chocolatey GUI points `ChocolateyInstall` at the directory the GUI is running from (its `bin\Debug\net48` output), so Chocolatey reads/writes its own `lib`, `config`, `.chocolatey` store, etc. there instead of touching the machine-wide install. This keeps debugging fully isolated from the Chocolatey installed on your system, mirroring how Chocolatey CLI behaves when debugged out of Visual Studio. A fresh isolated config starts with only the default `chocolatey` community source. To use a folder of your choosing instead of the `bin` output, set the `ChocolateyGuiDebugInstall` environment variable to that path.
+2. **The Chocolatey installed to the system** (generally `C:\ProgramData\chocolatey`). To use this from a `DEBUG` build (the old default behaviour), set the environment variable `ChocolateyGuiUseSystemInstall=true`. `Release`/`ReleaseOfficial` builds always use the system install, so this is also the behaviour in CI.
+3. **A debug build of Chocolatey** "installed" into the same directory that Chocolatey GUI is running from. This occurs when you run `.\Get-ChocoUpdatedDebugVersion.ps1`, which swaps a `DEBUG`-compiled `chocolatey.dll` in for the referenced (official) one - use this when you need to step into / change Chocolatey.lib itself.
+
+> **Requires Dev Proxy.** The isolated remote-source UITests (`ChocolateyGuiSearchTests`, `ChocolateyGuiInstalledPackageTests`) mock the `community.chocolatey.org` feed through [Dev Proxy](https://aka.ms/devproxy), so they need it installed (e.g. `winget install DevProxy.DevProxy`, or point `DEVPROXY_PATH` at the executable). They run against setup 1 above and are skipped - not failed - when Dev Proxy cannot be found.
+
+> **Self-contained WireMock feed.** The remote-source UITests that need the `hermes` source and its `mixedpackage` package (`BetaPackagesTests`, `ChocolateyGuiTests` and `RemoteSourceOutdatedTests`) now serve that source from an in-process [WireMock.Net](https://github.com/WireMock-Net/WireMock.Net) OData feed (see `Source/ChocolateyGui.UITests/Support/Feed/`), registered automatically against the isolated install (setup 1) for the lifetime of the fixture. There is **no manual setup** - you no longer need to add a `hermes` source or obtain the internal `mixed-package` package from a Chocolatey-internal NuGet repository.
+
+> **Outdated / prerelease-upgrade tests.** `RemoteSourceOutdatedTests` (issue #1109 regression) additionally seeds an installed package into the isolated install before launch (`IsolatedChocolateyEnvironment.SeedInstalledPackage`, which generates a minimal stub `.nupkg` on the fly) and clears Chocolatey GUI's persisted outdated-packages cache (`%LocalAppData%\Chocolatey GUI\outdatedPackages*.xml`, cached for 60 minutes by default) so the outdated check runs fresh against the mock feed. No extra setup is required from you.
+
+> **Run the tests elevated.** Chocolatey GUI self-elevates (its executable carries a `requireAdministrator` manifest), and Windows UIPI prevents a non-elevated process from driving an elevated window. The UITests must therefore run from an **elevated** host - an Administrator Test Explorer (launch Visual Studio as Administrator) or an elevated `dotnet test`. From a non-elevated host the GUI opens but cannot be automated, and the tests time out with "Could not start the application".
+
+You can run the UITests by opening the Test Explorer (View -> Test Explorer), right clicking the ChocolateyGui.UITests collection, and select Run. **IMPORTANT**: Once you select to run the tests, DO NOT use your mouse or keyboard. The tests rely on interacting with the Chocolatey GUI window, and using the mouse or keyboard could impact that and cause tests to fail.

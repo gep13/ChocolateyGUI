@@ -1,27 +1,34 @@
-﻿using ChocolateyGui.TestUtilities;
-using ChocolateyGui.UITests.Screens;
+﻿using ChocolateyGui.UITests.Screens;
+using ChocolateyGui.UITests.Support.Feed;
 using FlaUI.Core;
 using FlaUI.Core.AutomationElements;
+using FlaUI.TestUtilities;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace ChocolateyGui.UITests
 {
 
     [TestFixture]
-    public class ChocolateyGuiTests : ChocolateyGuiTestBase
+    public class ChocolateyGuiTests : WireMockRemoteSourceTestBase
     {
-        protected new ApplicationStartMode ApplicationStartMode => ApplicationStartMode.OncePerFixture;        
+        protected override ApplicationStartMode ApplicationStartMode => ApplicationStartMode.OncePerFixture;
+
+        // RemoteSourceScreenTest drills into the hermes source; the About/Settings tests ignore it. One WireMock
+        // feed (the shared hermes dataset, which includes absolute-extracted-path) serves the whole fixture, so
+        // the tests no longer depend on an externally registered hermes source.
+        protected override IEnumerable<MockSourceDefinition> Sources => new[]
+        {
+            new MockSourceDefinition("hermes", MockFeeds.Hermes()),
+        };
 
         [Test]
         public void AboutScreenTest()
         {
             var mainScreen = Application.GetMainWindow(Automation).As<MainScreen>();
 
-            Assert.DoesNotThrow(() =>
-            {
-                var aboutScreen = mainScreen.OpenAndGetAboutScreen();
-                aboutScreen.BackButton.Invoke();
-            });
+            var aboutScreen = mainScreen.OpenAndGetAboutScreen();
+            aboutScreen.BackButton.Invoke();
         }
 
         [Test]
@@ -29,11 +36,8 @@ namespace ChocolateyGui.UITests
         {
             var mainScreen = Application.GetMainWindow(Automation).As<MainScreen>();
 
-            Assert.DoesNotThrow(() =>
-            {
-                var settingsScreen = mainScreen.OpenAndGetSettingsScreen();
-                settingsScreen.BackButton.Invoke();
-            });
+            var settingsScreen = mainScreen.OpenAndGetSettingsScreen();
+            settingsScreen.BackButton.Invoke();
         }
 
         [Test]
@@ -41,14 +45,11 @@ namespace ChocolateyGui.UITests
         {
             var mainScreen = Application.GetMainWindow(Automation).As<MainScreen>();
 
-            Assert.DoesNotThrow(() =>
-            {
-                var remoteSourceScreen = mainScreen.OpenAndGetRemoteSourceScreen("hermes");
+            var remoteSourceScreen = mainScreen.OpenAndGetRemoteSourceScreen("hermes");
 
-                var packageDetailsScreen = remoteSourceScreen.GetPackageDetailsScreen("absolute-extracted-path");
+            var packageDetailsScreen = remoteSourceScreen.GetPackageDetailsScreen("absolute-extracted-path");
 
-                packageDetailsScreen.BackButton.Invoke();
-            });
+            packageDetailsScreen.BackButton.Invoke();
         }
     }
 }
